@@ -45,9 +45,9 @@ class SwitchTests < CLITests
     @cli = CLI.new{ option 'verbose', 'verbosity'}
   end
 
-  should "default to false" do
+  should "default to niil" do
     subject.parse! []
-    assert_equal false, subject.opts['verbose']
+    assert_equal nil, subject.opts['verbose']
   end
 
   should "set true if abbrev" do
@@ -70,7 +70,7 @@ end
 class SingleValueTests < CLITests
   desc "when parsing a single value opt"
   setup do
-    @cli = CLI.new{ option 'skill', 'skillz', :default => '' }
+    @cli = CLI.new{ option 'skill', 'skillz', :value => '' }
   end
 
   should "set the default" do
@@ -89,7 +89,7 @@ class SingleValueTests < CLITests
   end
 
   should "type-cast the value" do
-    cli = CLI.new{ option 'skill', 'skillz', :default => 1 }
+    cli = CLI.new{ option 'skill', 'skillz', :value => 1 }
     cli.parse! ['-s', '12']
     assert_equal 12, cli.opts['skill']
   end
@@ -99,7 +99,7 @@ end
 class ListValueTests < CLITests
   desc "when parsing a list value opt"
   setup do
-    @cli = CLI.new{ option 'skill', 'skillz', :default => [] }
+    @cli = CLI.new{ option 'skill', 'skillz', :value => [] }
   end
 
   should "set the list values by parsing the value as comma-separated" do

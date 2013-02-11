@@ -8,7 +8,7 @@ class CLI  # Version 0.0.1, https://github.com/redding/cli.rb
     require 'optparse'
     @data, @args, @opts = [], [], {}; @parser = OptionParser.new do |p|
       p.banner = ''; @options.each do |o|
-        @opts[o.name] = o.default; p.on(*o.parser_args){ |v| @opts[o.name] = v }
+        @opts[o.name] = o.value; p.on(*o.parser_args){ |v| @opts[o.name] = v }
       end
       p.on_tail('--version', ''){ |v| raise VersionExit, v.to_s }
       p.on_tail('--help',    ''){ |v| raise HelpExit,    v.to_s }
@@ -28,13 +28,13 @@ class CLI  # Version 0.0.1, https://github.com/redding/cli.rb
   end
 
   class Option
-    attr_reader :name, :opt_name, :desc, :abbrev, :default, :klass, :parser_args
+    attr_reader :name, :opt_name, :desc, :abbrev, :value, :klass, :parser_args
 
     def initialize(name, *args)
       settings, @desc = args.last.kind_of?(::Hash) ? args.pop : {}, args.pop || ''
       @name, @opt_name, @abbrev = parse_name_values(name, settings[:abbrev])
-      @default, @klass = get_default_settings(settings)
-      @parser_args = if [TrueClass, FalseClass].include?(@klass)
+      @value, @klass = gvalinfo(settings[:value])
+      @parser_args = if [TrueClass, FalseClass, NilClass].include?(@klass)
         ["-#{@abbrev}", "--[no-]#{@opt_name}", @desc]
       else
         ["-#{@abbrev}", "--#{@opt_name} #{@opt_name.upcase}", @klass, @desc]
@@ -48,8 +48,7 @@ class CLI  # Version 0.0.1, https://github.com/redding/cli.rb
         custom_abbrev || processed_name.gsub(/[^a-z]/, '').chars.first || 'a'
       ]
     end
-    def get_default_settings(settings)
-      [ (val = settings[:default] || false), val.class == Fixnum ? Integer : val.class ]
-    end
+    def gvalinfo(v); v.kind_of?(Class) ? [nil,gklass(v)] : [v,gklass(v.class)]; end
+    def gklass(k); k == Fixnum ? Integer : k; end
   end
 end
