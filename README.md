@@ -30,6 +30,10 @@ It does no validations or handling.  It only parses the options and builds an ar
 * To define long arguments with spaces and other special characters, define an option which takes a `String` as an argument. Everything between quotes will be parsed as the value for that argument.
 * To define arguments which accept lists, define an option which takes an `Array` as an argument.  The input will be split by comma. If the arguments contain spaces, wrap the whole thing in quotes.
 
+## Example
+
+See the ['example file'](/example.rb) for details on usage and handling.
+
 ## Installation
 
 Copy the `cli.rb` file into your project and require it.
