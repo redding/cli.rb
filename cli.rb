@@ -37,7 +37,7 @@ class CLI  # Version 0.0.1, https://github.com/redding/cli.rb
       @parser_args = if [TrueClass, FalseClass].include?(@klass)
         ["-#{@abbrev}", "--[no-]#{@opt_name}", @desc]
       else
-        ["-#{@abbrev}", "--#{@opt_name} #{@default}", @klass, @desc]
+        ["-#{@abbrev}", "--#{@opt_name} #{@opt_name.upcase}", @klass, @desc]
       end
     end
 

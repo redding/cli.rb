@@ -81,8 +81,8 @@ class ValueOptTests < OptionTests
     @option = CLI::Option.new('test', "testing", :default => 'value')
   end
 
-  should "use abbrev, name with default, klass, and desc in the parser_args" do
-    exp_args = ['-t', '--test value', String, 'testing']
+  should "use abbrev, name with default, VALUE, and desc in the parser_args" do
+    exp_args = ['-t', '--test TEST', String, 'testing']
     assert_equal exp_args, subject.parser_args
   end
 
