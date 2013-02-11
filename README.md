@@ -8,8 +8,6 @@ A command-line argument parser for Ruby.
 require 'cli'
 
 cli = CLI.new do
-  # the :help and :version options are always parsed
-
   option :severity, "set severity", :default => 4
   option :verbose, "enable verbose output"
   option :thing, "set thing", :default => "AThing"
@@ -17,12 +15,12 @@ end
 
 cli.parse! ['--verbose', 'some', 'other', 'args']
 cli.opts  # => {:severity => 4, :verbose => true, :thing => "AThing"}
-cli.args  # => ["some", "other", "args"]
+cli.args  # => ["some", "other", "args", {:severity => 4, :verbose => true, :thing => "AThing"}]
 ```
 
 ## Features
 
-There is no install, no dependency to manage.  Just copy in `cli.rb` to your project and use it.
+There is no install, no dependency to manage.  Just copy in `cli.rb` (<60 loc) to your project and use it.
 
 It does no validations or handling.  It only parses the options from the arguments and provides readers for them
 

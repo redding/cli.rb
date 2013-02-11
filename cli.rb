@@ -5,7 +5,7 @@ class CLI  # Version 0.0.1, https://github.com/redding/cli.rb
   def initialize(&block)
     @options = []; instance_eval(&block) if block
     require 'optparse'
-    @arg, @opts = [], {}; @parser = OptionParser.new do |p|
+    @args, @opts = [], {}; @parser = OptionParser.new do |p|
       p.banner = ''; @options.each do |o|
         @opts[o.name] = o.default; p.on(*o.parser_args){ |v| @opts[o.name] = v }
       end
@@ -19,11 +19,11 @@ class CLI  # Version 0.0.1, https://github.com/redding/cli.rb
     @args = (argv || []).dup.tap do |args_list|
       begin; @parser.parse!(args_list)
       rescue OptionParser::ParseError => err; raise OptsParseError, err.message; end
-    end
+    end; @args << @opts
   end
   def option(*args); @options << Option.new(*args); end
   def inspect
-    "#<#{self.class}:#{'0x0%x' % (object_id << 1)} @args=#{@args.inspect}, @opts=#{@opts.inspect}>"
+    "#<#{self.class}:#{'0x0%x' % (object_id << 1)} @args=#{@args.inspect}>"
   end
 
   class Option

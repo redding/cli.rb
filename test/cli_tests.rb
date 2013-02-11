@@ -125,7 +125,3 @@ class ListValueTests < CLITests
   end
 
 end
-
-class ArgsParsingTests < CLITests
-  # TODO
-end
