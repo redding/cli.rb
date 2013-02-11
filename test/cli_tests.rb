@@ -7,51 +7,34 @@ class CLITests < Assert::Context
   end
   subject { @cli }
 
-  should have_imeths :option, :to_s, :parse!
-  should have_readers :args, :opts
+  should have_readers :args, :opts, :data
+  should have_imeths  :option, :parse!, :to_s
 
-  def catch_thrown(cli, thrown, *argv)
-    catch(thrown){ cli.parse! argv }
+  def cli_parse(cli, *argv)
+    cli.parse! argv
   end
 
-  should "operate on ARGV by default" do
-    assert_equal [], ARGV
-    subject.parse!
-    assert_empty subject.args
-    assert_empty subject.opts
+  should "show an options explanation from the parser on `to_s`" do
+    exp_msg = "\n        --version\n        --help\n"
+    assert_equal exp_msg, subject.to_s
   end
 
-end
-
-class VersionTests < CLITests
-
-  should "catch `version` when parsing `-v` when with no other 'v' opts" do
-    val = catch_thrown CLI.new, 'version', '-v'
-    assert_equal true, val
+  should "raise `VersionExit` parsing `--version`" do
+    assert_raises(CLI::VersionExit) { cli_parse subject, '--version' }
   end
 
-  should "catch `version` when parsing `-V` when with other 'v' opts" do
+  should "raise `HelpExit` when parsing `--help`" do
+    assert_raises(CLI::HelpExit) { cli_parse subject, '--help' }
+  end
+
+  should "parse the args, opts, and full data" do
     cli = CLI.new{ option 'verbose', 'verbosity'}
-    val = catch_thrown cli, 'version', '-V'
-    assert_equal true, val
+    cli_parse(cli, 'an', 'arg', '-v')
 
-    cli = CLI.new{ option 'anopt', 'opt', :abbrev => 'v' }
-    val = catch_thrown cli, 'version', '-V'
-    assert_equal true, val
-  end
-
-end
-
-class HelpTests < CLITests
-
-  should "catch `help` when parsing `-h`" do
-    assert_nothing_raised { catch_thrown CLI.new, 'help', '-h' }
-  end
-
-  should "return an opts explanation message when catching `help`" do
-    exp_msg = "-v, --version\n    -h, --help"
-    val = catch_thrown CLI.new, 'help', '-h'
-    assert_equal exp_msg, val
+    assert_equal ['an', 'arg'], cli.args
+    assert_kind_of Hash, cli.opts
+    assert_equal 1, cli.opts.size
+    assert_equal cli.args+[cli.opts], cli.data
   end
 
 end
@@ -62,9 +45,9 @@ class SwitchTests < CLITests
     @cli = CLI.new{ option 'verbose', 'verbosity'}
   end
 
-  should "default to false" do
+  should "default to niil" do
     subject.parse! []
-    assert_equal false, subject.opts['verbose']
+    assert_equal nil, subject.opts['verbose']
   end
 
   should "set true if abbrev" do
@@ -87,7 +70,7 @@ end
 class SingleValueTests < CLITests
   desc "when parsing a single value opt"
   setup do
-    @cli = CLI.new{ option 'skill', 'skillz', :default => '' }
+    @cli = CLI.new{ option 'skill', 'skillz', :value => '' }
   end
 
   should "set the default" do
@@ -106,7 +89,7 @@ class SingleValueTests < CLITests
   end
 
   should "type-cast the value" do
-    cli = CLI.new{ option 'skill', 'skillz', :default => 1 }
+    cli = CLI.new{ option 'skill', 'skillz', :value => 1 }
     cli.parse! ['-s', '12']
     assert_equal 12, cli.opts['skill']
   end
@@ -116,7 +99,7 @@ end
 class ListValueTests < CLITests
   desc "when parsing a list value opt"
   setup do
-    @cli = CLI.new{ option 'skill', 'skillz', :default => [] }
+    @cli = CLI.new{ option 'skill', 'skillz', :value => [] }
   end
 
   should "set the list values by parsing the value as comma-separated" do
@@ -124,8 +107,4 @@ class ListValueTests < CLITests
     assert_equal ['art', 'deco', 'eat', 'sleep'], subject.opts['skill']
   end
 
-end
-
-class ArgsParsingTests < CLITests
-  # TODO
 end
