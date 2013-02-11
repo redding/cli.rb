@@ -1,12 +1,12 @@
-# 1. require in the cli.rb code (you code also paste it as child class or something)
+# 1. require in the cli.rb code (or paste it as MyCLI child class or something)
 
-require 'cli'
+require 'mycli/cli'
 
-# 2. setup your CLI class, have it compose ::CLI (or sub-class or whatever)
+# 2. setup your CLI class, have it compose CLIRB (or sub-class or whatever)
 
 class MyCLI
   def initialize
-    @cli = ::CLI.new do
+    @cli = CLIRB.new do
       option :method, "method: line, word (default), or char", {
         :value => String
       }
@@ -27,8 +27,8 @@ class MyCLI
 # 3. inspect, validate, handle the opts and args
 
       a = @cli.args; aa = a.map(&:inspect).join(', ')
-      raise ::CLI::Error, "too few arguments (#{a.size}): #{aa}"  if a.size < 2
-      raise ::CLI::Error, "too many arguments (#{a.size}): #{aa}" if a.size > 2
+      raise CLIRB::Error, "too few arguments (#{a.size}): #{aa}"  if a.size < 2
+      raise CLIRB::Error, "too many arguments (#{a.size}): #{aa}" if a.size > 2
 
       @cli.opts['method'] ||= 'word'
       @cli.opts['format'] ||= 'ascii' if @cli.opts['ascii']
@@ -38,22 +38,22 @@ class MyCLI
 
       begin
 
-# 4. Use the CLI data in a handler or whatever
+# 4. Use CLIRB data in a handler or whatever
 
         MyHandler.new(*@cli.data).run
       rescue MyError => err
-        raise ::CLI::Error, err.message
+        raise CLIRB::Error, err.message
       end
 
-# 5. Use the CLI exceptions to handle different usage cases
+# 5. Use the CLIRB exceptions to handle different usage cases
 
-    rescue ::CLI::HelpExit
+    rescue CLIRB::HelpExit
       puts help_msg
       exit(0)
-    rescue ::CLI::VersionExit
+    rescue CLIRB::VersionExit
       puts MyCLI::VERSION
       exit(0)
-    rescue ::CLI::Error => err
+    rescue CLIRB::Error => err
       puts "#{err.message}\n\n"
       puts help_msg
       exit(1)
