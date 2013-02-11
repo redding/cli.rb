@@ -15,8 +15,8 @@ class CLI  # Version 0.0.1, https://github.com/redding/cli.rb
     end
   end
 
-  def parse!(argv=nil)
-    @args = (argv || ARGV).dup.tap do |args_list|
+  def parse!(argv)
+    @args = (argv || []).dup.tap do |args_list|
       begin; @parser.parse!(args_list)
       rescue OptionParser::ParseError => err; raise OptsParseError, err.message; end
     end
