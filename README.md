@@ -15,24 +15,18 @@ cli = CLI.new do
   option :thing, "set thing", :default => "AThing"
 end
 
-# given `cli --verbose some other args`
-cli.opts   # => {:severity => 4, :verbose => true, :thing => "AThing"}
-cli.args   # => ["some", "other", "args"]
-cli.explain_opts # =>
-# "-s, --severity 4           set severity"\
-# "-v, --[no-]verbose         enable verbose output"\
-# "-m, --mutation ATHing      set mutation"\
-# "-h, --help                 Show this message"\
-# "-V, --version              Print version"
+cli.parse! ['--verbose', 'some', 'other', 'args']
+cli.opts  # => {:severity => 4, :verbose => true, :thing => "AThing"}
+cli.args  # => ["some", "other", "args"]
 ```
 
-# Features
+## Features
 
 There is no install, no dependency to manage.  Just copy in `cli.rb` to your project and use it.
 
 It does no validations or handling.  It only parses the options from the arguments and provides readers for them
 
-# Notes
+## Notes
 
 * You must define default values, if the option should accept an argument. Every option without a default value (or with `true` or `false` as default) is treated as a switch.
 * It is not possible to define mandatory / required arguments
