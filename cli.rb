@@ -1,4 +1,4 @@
-class CLI  # Version 0.0.1, https://github.com/redding/cli.rb
+class CLI  # Version 0.1.0, https://github.com/redding/cli.rb
   Error    = Class.new(RuntimeError);
   HelpExit = Class.new(RuntimeError); VersionExit = Class.new(RuntimeError)
   attr_reader :argv, :args, :opts, :data
