@@ -7,7 +7,7 @@ class CLITests < Assert::Context
   end
   subject { @cli }
 
-  should have_readers :args, :opts
+  should have_readers :args, :opts, :data
   should have_imeths  :option, :parse!
 
   def cli_parse(cli, *argv)
@@ -24,6 +24,16 @@ class CLITests < Assert::Context
 
     assert err
     assert_equal exp_msg, err.message
+  end
+
+  should "parse the args, opts, and full data" do
+    cli = CLI.new{ option 'verbose', 'verbosity'}
+    cli_parse(cli, 'an', 'arg', '-v')
+
+    assert_equal ['an', 'arg'], cli.args
+    assert_kind_of Hash, cli.opts
+    assert_equal 1, cli.opts.size
+    assert_equal cli.args+[cli.opts], cli.data
   end
 
 end
