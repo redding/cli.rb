@@ -8,22 +8,23 @@ class CLITests < Assert::Context
   subject { @cli }
 
   should have_readers :args, :opts, :data
-  should have_imeths  :option, :parse!
+  should have_imeths  :option, :parse!, :to_s
 
   def cli_parse(cli, *argv)
     cli.parse! argv
+  end
+
+  should "show an options explanation from the parser on `to_s`" do
+    exp_msg = "\n        --version\n        --help\n"
+    assert_equal exp_msg, subject.to_s
   end
 
   should "raise `VersionExit` parsing `--version`" do
     assert_raises(CLI::VersionExit) { cli_parse subject, '--version' }
   end
 
-  should "raise `HelpExit` when parsing `--help` and set an opts explanation" do
-    exp_msg = "\n        --version\n        --help\n"
-    err = begin; cli_parse subject, '--help'; rescue CLI::HelpExit => e; e; end
-
-    assert err
-    assert_equal exp_msg, err.message
+  should "raise `HelpExit` when parsing `--help`" do
+    assert_raises(CLI::HelpExit) { cli_parse subject, '--help' }
   end
 
   should "parse the args, opts, and full data" do

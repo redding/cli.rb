@@ -10,8 +10,8 @@ class CLI  # Version 0.0.1, https://github.com/redding/cli.rb
       p.banner = ''; @options.each do |o|
         @opts[o.name] = o.default; p.on(*o.parser_args){ |v| @opts[o.name] = v }
       end
-      p.on_tail('--version', ''){ |v| raise VersionExit, v.to_s    }
-      p.on_tail('--help',    ''){ |v| raise HelpExit, @parser.to_s }
+      p.on_tail('--version', ''){ |v| raise VersionExit, v.to_s }
+      p.on_tail('--help',    ''){ |v| raise HelpExit,    v.to_s }
     end
   end
 
@@ -22,6 +22,7 @@ class CLI  # Version 0.0.1, https://github.com/redding/cli.rb
       rescue OptionParser::ParseError => err; raise Error, err.message; end
     end; @data = @args + [@opts]
   end
+  def to_s; @parser.to_s; end
   def inspect
     "#<#{self.class}:#{'0x0%x' % (object_id << 1)} @data=#{@data.inspect}>"
   end
