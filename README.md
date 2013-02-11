@@ -22,7 +22,7 @@ cli.args  # => ["some", "other", "args", {:severity => 4, :verbose => true, :thi
 
 There is no install, no dependency to manage.  Just copy in `cli.rb` (<60 loc) to your project and use it.
 
-It does no validations or handling.  It only parses the options from the arguments and provides readers for them
+It does no validations or handling.  It only parses the options and builds an arguments list.  It raises exceptions on errors.  You define your own handling.
 
 ## Notes
 

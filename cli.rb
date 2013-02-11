@@ -1,5 +1,6 @@
 class CLI  # Version 0.0.1, https://github.com/redding/cli.rb
-  OptsParseError = Class.new(RuntimeError)
+  Error    = Class.new(RuntimeError);
+  HelpExit = Class.new(RuntimeError); VersionExit = Class.new(RuntimeError)
   attr_reader :argv, :args, :opts
 
   def initialize(&block)
@@ -9,19 +10,18 @@ class CLI  # Version 0.0.1, https://github.com/redding/cli.rb
       p.banner = ''; @options.each do |o|
         @opts[o.name] = o.default; p.on(*o.parser_args){ |v| @opts[o.name] = v }
       end
-      a = @options.map(&:abbrev).include?('v') ? 'V' : 'v'
-      p.on_tail("-#{a}", "--version", ''){ |v| throw 'version', v }
-      p.on_tail("-h", "--help", ''){ |v| throw 'help', @parser.to_s.strip }
+      p.on_tail('--version', ''){ |v| raise VersionExit, v.to_s    }
+      p.on_tail('--help',    ''){ |v| raise HelpExit, @parser.to_s }
     end
   end
 
+  def option(*args); @options << Option.new(*args); end
   def parse!(argv)
     @args = (argv || []).dup.tap do |args_list|
       begin; @parser.parse!(args_list)
-      rescue OptionParser::ParseError => err; raise OptsParseError, err.message; end
+      rescue OptionParser::ParseError => err; raise Error, err.message; end
     end; @args << @opts
   end
-  def option(*args); @options << Option.new(*args); end
   def inspect
     "#<#{self.class}:#{'0x0%x' % (object_id << 1)} @args=#{@args.inspect}>"
   end

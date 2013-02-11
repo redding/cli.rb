@@ -7,51 +7,23 @@ class CLITests < Assert::Context
   end
   subject { @cli }
 
-  should have_imeths :option, :to_s, :parse!
   should have_readers :args, :opts
+  should have_imeths  :option, :parse!
 
-  def catch_thrown(cli, thrown, *argv)
-    catch(thrown){ cli.parse! argv }
+  def cli_parse(cli, *argv)
+    cli.parse! argv
   end
 
-  should "operate on ARGV by default" do
-    assert_equal [], ARGV
-    subject.parse!
-    assert_empty subject.args
-    assert_empty subject.opts
+  should "raise `VersionExit` parsing `--version`" do
+    assert_raises(CLI::VersionExit) { cli_parse subject, '--version' }
   end
 
-end
+  should "raise `HelpExit` when parsing `--help` and set an opts explanation" do
+    exp_msg = "\n        --version\n        --help\n"
+    err = begin; cli_parse subject, '--help'; rescue CLI::HelpExit => e; e; end
 
-class VersionTests < CLITests
-
-  should "catch `version` when parsing `-v` when with no other 'v' opts" do
-    val = catch_thrown CLI.new, 'version', '-v'
-    assert_equal true, val
-  end
-
-  should "catch `version` when parsing `-V` when with other 'v' opts" do
-    cli = CLI.new{ option 'verbose', 'verbosity'}
-    val = catch_thrown cli, 'version', '-V'
-    assert_equal true, val
-
-    cli = CLI.new{ option 'anopt', 'opt', :abbrev => 'v' }
-    val = catch_thrown cli, 'version', '-V'
-    assert_equal true, val
-  end
-
-end
-
-class HelpTests < CLITests
-
-  should "catch `help` when parsing `-h`" do
-    assert_nothing_raised { catch_thrown CLI.new, 'help', '-h' }
-  end
-
-  should "return an opts explanation message when catching `help`" do
-    exp_msg = "-v, --version\n    -h, --help"
-    val = catch_thrown CLI.new, 'help', '-h'
-    assert_equal exp_msg, val
+    assert err
+    assert_equal exp_msg, err.message
   end
 
 end
