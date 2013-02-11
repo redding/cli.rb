@@ -7,7 +7,7 @@ A command-line argument parser for Ruby.
 ```ruby
 require 'cli'
 
-cli = CLI.new do
+cli = CLIRB.new do
   option :severity, "set severity", :value => 4
   option :verbose, "enable verbose output"
   option :thing, "set thing", :value => String
@@ -36,7 +36,7 @@ See the ['example file'](/example.rb) for details on usage and handling.
 
 ## Installation
 
-Copy the `cli.rb` file into your project and require it.
+Paste the contents of the `cli.rb` file into your project under its namespace (anyway you see fit) and use it.  Seriously, namespace your use of `CLIRB` so that you aren't referencing it from the global namespace (you'll help avoid conflicts with dependencies that also use cli.rb).
 
 ## Contributing
 
