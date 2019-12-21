@@ -8,10 +8,10 @@ class MyCLI
   def initialize
     @cli = CLIRB.new do
       option :method, "method: line, word (default), or char", {
-        :value => String
+        value: String
       }
       option :format, "format: ascii (default), color, html, or esc", {
-        :value => String
+        value: String
       }
       option :ascii, "format output in ascii"
       option :color, "format output in color"
@@ -30,11 +30,11 @@ class MyCLI
       raise CLIRB::Error, "too few arguments (#{a.size}): #{aa}"  if a.size < 2
       raise CLIRB::Error, "too many arguments (#{a.size}): #{aa}" if a.size > 2
 
-      @cli.opts["method"] ||= "word"
-      @cli.opts["format"] ||= "ascii" if @cli.opts["ascii"]
-      @cli.opts["format"] ||= "color" if @cli.opts["color"]
-      @cli.opts["format"] ||= "html"  if @cli.opts["html"]
-      @cli.opts["format"] ||= "ascii"
+      @cli.opts[:method] ||= "word"
+      @cli.opts[:format] ||= "ascii" if @cli.opts[:ascii]
+      @cli.opts[:format] ||= "color" if @cli.opts[:color]
+      @cli.opts[:format] ||= "html"  if @cli.opts[:html]
+      @cli.opts[:format] ||= "ascii"
 
       begin
 

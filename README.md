@@ -8,9 +8,9 @@ A command-line argument parser for Ruby.
 require "cli"
 
 cli = CLIRB.new do
-  option :severity, "set severity", :value => 4
+  option :severity, "set severity", value: 4
   option :verbose, "enable verbose output"
-  option :thing, "set thing", :value => String
+  option :thing, "set thing", value: String
 end
 
 cli.parse! ["--verbose", "some", "other", "args"]
