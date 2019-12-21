@@ -1,3 +1,5 @@
 source "https://rubygems.org"
 
-gem 'assert', '~> 2.16.1'
+ruby "~> 2.4"
+
+gem 'assert', '~> 2.17.0'

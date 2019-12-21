@@ -55,12 +55,6 @@ class OptionTests < Assert::Context
     assert_nil opt.value
     assert_equal String, opt.klass
   end
-
-  should "set the klass to Integer if given a Fixnum" do
-    assert_equal Integer, CLIRB::Option.new('test', '', :value => 1).klass
-    assert_equal Integer, CLIRB::Option.new('test', '', :value => Fixnum).klass
-  end
-
 end
 
 class SwitchOptTests < OptionTests
