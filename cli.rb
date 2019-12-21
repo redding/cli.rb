@@ -31,8 +31,8 @@ class CLIRB  # Version 1.0.0, https://github.com/redding/cli.rb
     attr_reader :name, :opt_name, :desc, :abbrev, :value, :klass, :parser_args
 
     def initialize(name, desc = nil, abbrev: nil, value: nil)
-      @desc = desc || ""
-      @name, @opt_name, @abbrev = parse_name_values(name, abbrev)
+      @name, @desc = name, desc || ""
+      @opt_name, @abbrev = parse_name_values(name, abbrev)
       @value, @klass = gvalinfo(value)
       @parser_args = if [TrueClass, FalseClass, NilClass].include?(@klass)
         ["-#{@abbrev}", "--[no-]#{@opt_name}", @desc]
@@ -44,7 +44,7 @@ class CLIRB  # Version 1.0.0, https://github.com/redding/cli.rb
     private
 
     def parse_name_values(name, custom_abbrev)
-      [ (processed_name = name.to_s.strip.downcase), processed_name.gsub("_", "-"),
+      [ (processed_name = name.to_s.strip.downcase).gsub("_", "-"),
         custom_abbrev || processed_name.gsub(/[^a-z]/, "").chars.first || "a"
       ]
     end

@@ -96,11 +96,11 @@ end
 class ListValueTests < CLITests
   desc "when parsing a list value opt"
   setup do
-    @cli = CLIRB.new{ option "skill", "skillz", :value => [] }
+    @cli = CLIRB.new{ option :skill, "skillz", :value => [] }
   end
 
   should "set the list values by parsing the value as comma-separated" do
     subject.parse! ["--skill", "art,deco,eat,sleep"]
-    assert_equal ["art", "deco", "eat", "sleep"], subject.opts["skill"]
+    assert_equal ["art", "deco", "eat", "sleep"], subject.opts[:skill]
   end
 end

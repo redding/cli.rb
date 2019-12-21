@@ -21,13 +21,14 @@ class OptionTests < Assert::Context
 
   should "know its defaults" do
     opt_with_defaults = CLIRB::Option.new(:test)
+    assert_equal :test,    opt_with_defaults.name
     assert_equal "",       opt_with_defaults.desc
     assert_equal nil,      opt_with_defaults.value
     assert_equal NilClass, opt_with_defaults.klass
   end
 
-  should "force its name to a downcased string val" do
-    assert_equal "test", CLIRB::Option.new(:Test).name
+  should "always use the given name as the option name" do
+    assert_equal :Test, CLIRB::Option.new(:Test).name
   end
 
   should "parse its opt_name from the name" do
