@@ -37,7 +37,7 @@ class CLIRB  # Version 1.0.0, https://github.com/redding/cli.rb
       @parser_args = if [TrueClass, FalseClass, NilClass].include?(@klass)
         ["-#{@abbrev}", "--[no-]#{@opt_name}", @desc]
       else
-        ["-#{@abbrev}", "--#{@opt_name} #{@opt_name.upcase}", @klass, @desc]
+        ["-#{@abbrev}", "--#{@opt_name} VALUE", @klass, @desc]
       end
     end
 

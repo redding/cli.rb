@@ -76,7 +76,7 @@ class ValueOptTests < OptionTests
   end
 
   should "use abbrev, name with VALUE, klass, and desc in the parser_args" do
-    exp_args = ["-t", "--thing THING", String, "testing"]
+    exp_args = ["-t", "--thing VALUE", String, "testing"]
     assert_equal exp_args, subject.parser_args
   end
 end
