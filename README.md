@@ -5,7 +5,7 @@ A command-line argument parser for Ruby.
 ## Usage
 
 ```ruby
-require 'cli'
+require "cli"
 
 cli = CLIRB.new do
   option :severity, "set severity", :value => 4
@@ -13,7 +13,7 @@ cli = CLIRB.new do
   option :thing, "set thing", :value => String
 end
 
-cli.parse! ['--verbose', 'some', 'other', 'args']
+cli.parse! ["--verbose", "some", "other", "args"]
 cli.opts  #=> {:severity => 4, :verbose => true, :thing => nil}
 cli.args  #=> ["some", "other", "args"]
 cli.data  #=> ["some", "other", "args", {:severity => 4, :verbose => true, :thing => nil}]
@@ -35,7 +35,7 @@ cli.data  #=> ["some", "other", "args", {:severity => 4, :verbose => true, :thin
 
 ## Example
 
-See the ['example file'](/example.rb) for details on usage and handling.
+See the ["example file"](/example.rb) for details on usage and handling.
 
 ## Installation
 
@@ -45,6 +45,6 @@ Paste the contents of the `cli.rb` file into your project under a namespace (any
 
 1. Fork it
 2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Added some feature'`)
+3. Commit your changes (`git commit -am "Added some feature"`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request

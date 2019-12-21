@@ -1,6 +1,6 @@
 # 1. require in the cli.rb code (or paste it as MyCLI child class or something)
 
-require 'mycli/cli'
+require "mycli/cli"
 
 # 2. setup your CLI class, have it compose CLIRB (or sub-class or whatever)
 
@@ -26,15 +26,15 @@ class MyCLI
 
 # 3. inspect, validate, handle the opts and args
 
-      a = @cli.args; aa = a.map(&:inspect).join(', ')
+      a = @cli.args; aa = a.map(&:inspect).join(", ")
       raise CLIRB::Error, "too few arguments (#{a.size}): #{aa}"  if a.size < 2
       raise CLIRB::Error, "too many arguments (#{a.size}): #{aa}" if a.size > 2
 
-      @cli.opts['method'] ||= 'word'
-      @cli.opts['format'] ||= 'ascii' if @cli.opts['ascii']
-      @cli.opts['format'] ||= 'color' if @cli.opts['color']
-      @cli.opts['format'] ||= 'html'  if @cli.opts['html']
-      @cli.opts['format'] ||= 'ascii'
+      @cli.opts["method"] ||= "word"
+      @cli.opts["format"] ||= "ascii" if @cli.opts["ascii"]
+      @cli.opts["format"] ||= "color" if @cli.opts["color"]
+      @cli.opts["format"] ||= "html"  if @cli.opts["html"]
+      @cli.opts["format"] ||= "ascii"
 
       begin
 
@@ -67,5 +67,4 @@ class MyCLI
     "Usage: mycli [opts] LEFT RIGHT\n"\
     "#{@cli}"
   end
-
 end
