@@ -30,10 +30,10 @@ class CLIRB  # Version 1.0.0, https://github.com/redding/cli.rb
   class Option
     attr_reader :name, :opt_name, :desc, :abbrev, :value, :klass, :parser_args
 
-    def initialize(name, *args)
-      settings, @desc = args.last.kind_of?(::Hash) ? args.pop : {}, args.pop || ""
-      @name, @opt_name, @abbrev = parse_name_values(name, settings[:abbrev])
-      @value, @klass = gvalinfo(settings[:value])
+    def initialize(name, desc = nil, abbrev: nil, value: nil)
+      @desc = desc || ""
+      @name, @opt_name, @abbrev = parse_name_values(name, abbrev)
+      @value, @klass = gvalinfo(value)
       @parser_args = if [TrueClass, FalseClass, NilClass].include?(@klass)
         ["-#{@abbrev}", "--[no-]#{@opt_name}", @desc]
       else

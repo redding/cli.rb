@@ -3,7 +3,7 @@ require "assert"
 class OptionTests < Assert::Context
   desc "an Option"
   setup do
-    @option = CLIRB::Option.new("test", "testing", :value => "value")
+    @option = CLIRB::Option.new("test", "testing", value: "value")
   end
   subject{ @option }
 
@@ -47,11 +47,11 @@ class OptionTests < Assert::Context
   end
 
   should "override its opt_abbrev with the :abbrev setting" do
-    assert_equal "x", CLIRB::Option.new("test", "", :abbrev => "x").abbrev
+    assert_equal "x", CLIRB::Option.new("test", "", abbrev: "x").abbrev
   end
 
   should "set its value to `nil` if given a Class :value" do
-    opt = CLIRB::Option.new("test", "", :value => String)
+    opt = CLIRB::Option.new("test", "", value: String)
     assert_nil opt.value
     assert_equal String, opt.klass
   end
@@ -72,7 +72,7 @@ end
 class ValueOptTests < OptionTests
   desc "that is not a switch"
   setup do
-    @option = CLIRB::Option.new("thing", "testing", :value => "value")
+    @option = CLIRB::Option.new("thing", "testing", value: "value")
   end
 
   should "use abbrev, name with VALUE, klass, and desc in the parser_args" do
