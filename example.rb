@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # 1. require in the cli.rb code (or paste it as MyCLI child class or something)
 
 require "mycli/cli"
@@ -8,10 +10,10 @@ class MyCLI
   def initialize
     @cli = CLIRB.new do
       option :method, "method: line, word (default), or char", {
-        value: String
+        value: String,
       }
       option :format, "format: ascii (default), color, html, or esc", {
-        value: String
+        value: String,
       }
       option :ascii, "format output in ascii"
       option :color, "format output in color"
@@ -24,9 +26,10 @@ class MyCLI
     begin
       @cli.parse!(*args)
 
-# 3. inspect, validate, handle the opts and args
+      # 3. inspect, validate, handle the opts and args
 
-      a = @cli.args; aa = a.map(&:inspect).join(", ")
+      a  = @cli.args
+      aa = a.map(&:inspect).join(", ")
       raise CLIRB::Error, "too few arguments (#{a.size}): #{aa}"  if a.size < 2
       raise CLIRB::Error, "too many arguments (#{a.size}): #{aa}" if a.size > 2
 
@@ -38,14 +41,14 @@ class MyCLI
 
       begin
 
-# 4. Use CLIRB data in a handler or whatever
+        # 4. Use CLIRB data in a handler or whatever
 
         MyHandler.new(*@cli.data).run
-      rescue MyError => err
-        raise CLIRB::Error, err.message
+      rescue MyError => ex
+        raise CLIRB::Error, ex.message
       end
 
-# 5. Use the CLIRB exceptions to handle different usage cases
+    # 5. Use the CLIRB exceptions to handle different usage cases
 
     rescue CLIRB::HelpExit
       puts help_msg
@@ -53,12 +56,12 @@ class MyCLI
     rescue CLIRB::VersionExit
       puts MyCLI::VERSION
       exit(0)
-    rescue CLIRB::Error => err
-      puts "#{err.message}\n\n"
+    rescue CLIRB::Error => ex
+      puts "#{ex.message}\n\n"
       puts help_msg
       exit(1)
-    rescue Exception => err
-      puts "#{err.message}\n\n"
+    rescue => ex
+      puts "#{ex.message}\n\n"
       exit(1)
     end
   end

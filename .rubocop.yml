@@ -1,0 +1,7 @@
+inherit_gem:
+  much-style-guide:
+    - "lib/much-style-guide/rubocop.yml"
+
+AllCops:
+  Exclude:
+    - "cli.rb"

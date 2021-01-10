@@ -1,5 +1,6 @@
-require "assert"
+# frozen_string_literal: true
 
+require "assert"
 require "cli"
 
 class CLIRB::Option
@@ -10,7 +11,8 @@ class CLIRB::Option
     end
     subject{ @option }
 
-    should have_readers :name, :opt_name, :desc, :abbrev, :value, :klass, :parser_args
+    should have_readers :name, :opt_name, :desc, :abbrev, :value
+    should have_readers :klass, :parser_args
 
     should "know its name and desc" do
       assert_equal "test", subject.name
