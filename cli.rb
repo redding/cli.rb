@@ -15,7 +15,7 @@ class CLIRB  # Version 1.1.0, https://github.com/redding/cli.rb
     end
   end
 
-  def option(*args); @options << Option.new(*args); end
+  def option(*args, **kargs); @options << Option.new(*args, **kargs); end
   def parse!(argv)
     @args = (argv || []).dup.tap do |args_list|
       begin; @parser.parse!(args_list)
