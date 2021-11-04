@@ -8,18 +8,23 @@ require "mycli/cli"
 
 class MyCLI
   def initialize
-    @cli = CLIRB.new do
-      option :method, "method: line, word (default), or char", {
-        value: String,
-      }
-      option :format, "format: ascii (default), color, html, or esc", {
-        value: String,
-      }
-      option :ascii, "format output in ascii"
-      option :color, "format output in color"
-      option :html,  "format output in html"
-      option :esc,   "format output as escaped-html w/ color"
-    end
+    @cli =
+      CLIRB.new do
+        option(
+          :method,
+          "method: line, word (default), or char",
+          value: String,
+        )
+        option(
+          :format,
+          "format: ascii (default), color, html, or esc",
+          value: String,
+        )
+        option(:ascii, "format output in ascii")
+        option(:color, "format output in color")
+        option(:html,  "format output in html")
+        option(:esc,   "format output as escaped-html w/ color")
+      end
   end
 
   def run(*args)

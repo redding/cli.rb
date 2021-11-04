@@ -7,11 +7,12 @@ A command-line argument parser for Ruby.
 ```ruby
 require "cli"
 
-cli = CLIRB.new do
-  option :severity, "set severity", value: 4
-  option :verbose, "enable verbose output"
-  option :thing, "set thing", value: String
-end
+cli =
+  CLIRB.new do
+    option :severity, "set severity", value: 4
+    option :verbose, "enable verbose output"
+    option :thing, "set thing", value: String
+  end
 
 cli.parse! ["--verbose", "some", "other", "args"]
 cli.opts  #=> {:severity => 4, :verbose => true, :thing => nil}
